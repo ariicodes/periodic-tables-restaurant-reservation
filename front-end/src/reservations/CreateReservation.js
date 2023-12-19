@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useHistory } from 'react-router-dom';
 
 const CreateReservation = () => {
 	const initialFormData = {
@@ -11,6 +12,7 @@ const CreateReservation = () => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
+	const history = useHistory();
 
 	const handleChange = e => {
 		setFormData({
@@ -92,7 +94,9 @@ const CreateReservation = () => {
 				</div>
 				<div>
 					<button type='submit'>Submit</button>
-					<button type='cancel'>Cancel</button>
+					<button type='cancel' onClick={() => history.goBack()}>
+						Cancel
+					</button>
 				</div>
 			</form>
 		</div>
