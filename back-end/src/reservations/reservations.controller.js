@@ -1,12 +1,17 @@
+const reservationsService = require('./reservations.service');
+
 /**
  * List handler for reservation resources
  */
-async function list(req, res) {
-  res.json({
-    data: [],
-  });
-}
+const list = async (req, res, next) => {
+	const { date } = req.query;
+	const reservation = await reservationsService.list(date);
+	if (reservation) {
+		res.json({ data: reservation });
+	}
+	next({ status: 404, message: `No reservations found for ${date}` });
+};
 
 module.exports = {
-  list,
+	list,
 };
