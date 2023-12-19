@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import { useHistory } from 'react-router-dom';
+import ErrorAlert from '../layout/ErrorAlert';
+import { createReservation } from '../utils/api';
 
 const CreateReservation = () => {
 	const initialFormData = {
@@ -12,6 +14,8 @@ const CreateReservation = () => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
+	const [reservationsError, setReservationsError] = useState(null);
+
 	const history = useHistory();
 
 	const handleChange = e => {
@@ -21,9 +25,30 @@ const CreateReservation = () => {
 		});
 	};
 
+	const handleSubmit = async e => {
+		e.preventDefault();
+		const abortController = new AbortController();
+
+		try {
+			const response = await createReservation(
+				formData,
+				abortController.signal
+			);
+			const data = await response.json();
+			console.log('RESERVATION ADDED:', data);
+			history.push(`/dashboard?date=${formData.reservation_date}`);
+		} catch (err) {
+			setReservationsError(err);
+			console.error(err);
+		}
+
+		return () => abortController.abort();
+	};
+
 	return (
 		<div>
-			<form>
+			<ErrorAlert error={reservationsError} />
+			<form onSubmit={handleSubmit}>
 				<div>
 					<label htmlFor='first_name'>
 						First Name:
