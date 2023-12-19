@@ -12,6 +12,15 @@ const list = async (req, res, next) => {
 	next({ status: 404, message: `No reservations found for ${date}` });
 };
 
+/**
+ * Create handler for reservation resources
+ */
+const create = async (req, res) => {
+	const newReservation = await reservationsService.create(req.body.data);
+	res.status(201).json({ data: newReservation });
+};
+
 module.exports = {
 	list,
+  create,
 };
