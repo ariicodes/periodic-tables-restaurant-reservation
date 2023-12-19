@@ -13,7 +13,6 @@ const CreateReservation = () => {
 	const [formData, setFormData] = useState(initialFormData);
 
 	const handleChange = e => {
-		e.preventDefault();
 		setFormData({
 			...formData,
 			[e.target.name]: e.target.value,
