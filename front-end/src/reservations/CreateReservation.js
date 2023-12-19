@@ -4,6 +4,9 @@ import ErrorAlert from '../layout/ErrorAlert';
 import { createReservation } from '../utils/api';
 
 const CreateReservation = () => {
+	const history = useHistory();
+	const [reservationsError, setReservationsError] = useState(null);
+
 	const initialFormData = {
 		first_name: '',
 		last_name: '',
@@ -14,14 +17,28 @@ const CreateReservation = () => {
 	};
 
 	const [formData, setFormData] = useState(initialFormData);
-	const [reservationsError, setReservationsError] = useState(null);
 
-	const history = useHistory();
+	const formatPhoneNumber = input => {
+		const cleaned = input.replace(/\D/g, ''); // Removes non-digit characters
+		const formattedNumber = cleaned.replace(
+			/(\d{3})(\d{3})(\d{4})/,
+			'$1-$2-$3'
+		);
+		return formattedNumber;
+	};
 
 	const handleChange = e => {
+		const { name, value } = e.target;
+		const newValue =
+			name === 'mobile_number'
+				? formatPhoneNumber(value)
+				: name === 'people'
+				? parseInt(value, 10)
+				: value;
+
 		setFormData({
 			...formData,
-			[e.target.name]: e.target.value,
+			[name]: newValue,
 		});
 	};
 
@@ -30,16 +47,15 @@ const CreateReservation = () => {
 		const abortController = new AbortController();
 
 		try {
-			const response = await createReservation(
+			const newReservation = await createReservation(
 				formData,
 				abortController.signal
 			);
-			const data = await response.json();
-			console.log('RESERVATION ADDED:', data);
+			console.log('RESERVATION ADDED:', newReservation);
 			history.push(`/dashboard?date=${formData.reservation_date}`);
 		} catch (err) {
 			setReservationsError(err);
-			console.error(err);
+			console.error('ERROR ADDING RESERVATION:', err);
 		}
 
 		return () => abortController.abort();
@@ -86,7 +102,10 @@ const CreateReservation = () => {
 					<label htmlFor='reservation_date'>
 						Reservation Date:
 						<input
+							input
 							type='date'
+							placeholder='YYYY-MM-DD'
+							pattern='\d{4}-\d{2}-\d{2}'
 							name='reservation_date'
 							id='reservation_date'
 							required
@@ -98,6 +117,8 @@ const CreateReservation = () => {
 						Reservation Time:
 						<input
 							type='time'
+							placeholder='HH:MM'
+							pattern='[0-9]{2}:[0-9]{2}'
 							name='reservation_time'
 							id='reservation_time'
 							required
@@ -111,7 +132,6 @@ const CreateReservation = () => {
 							type='number'
 							name='people'
 							id='people'
-							required
 							value={formData.people}
 							onChange={handleChange}
 						/>
