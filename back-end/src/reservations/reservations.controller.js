@@ -1,12 +1,15 @@
+const reservationsService = require('./reservations.service');
+const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
+
 /**
  * List handler for reservation resources
  */
-async function list(req, res) {
-  res.json({
-    data: [],
-  });
-}
+const list = async (req, res) => {
+	const { date } = req.query;
+	const reservations = await reservationsService.list(date);
+	return res.json({ data: reservations });
+};
 
 module.exports = {
-  list,
+	list: asyncErrorBoundary(list),
 };
