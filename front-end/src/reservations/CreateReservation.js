@@ -64,86 +64,87 @@ const CreateReservation = () => {
 	return (
 		<div>
 			<ErrorAlert error={reservationsError} />
-			<form onSubmit={handleSubmit}>
-				<div>
-					<label htmlFor='first_name'>
-						First Name:
-						<input
-							type='text'
-							name='first_name'
-							id='first_name'
-							required
-							value={formData.first_name}
-							onChange={handleChange}
-						/>
-					</label>
-					<label htmlFor='last_name'>
-						Last Name:
-						<input
-							type='text'
-							name='last_name'
-							id='last_name'
-							required
-							value={formData.last_name}
-							onChange={handleChange}
-						/>
-					</label>
-					<label htmlFor='mobile_number'>
-						Phone Number:
-						<input
-							type='tel'
-							name='mobile_number'
-							id='mobile_number'
-							required
-							value={formData.mobile_number}
-							onChange={handleChange}
-						/>
-					</label>
-					<label htmlFor='reservation_date'>
-						Reservation Date:
-						<input
-							input
-							type='date'
-							placeholder='YYYY-MM-DD'
-							pattern='\d{4}-\d{2}-\d{2}'
-							name='reservation_date'
-							id='reservation_date'
-							required
-							value={formData.reservation_date}
-							onChange={handleChange}
-						/>
-					</label>
-					<label htmlFor='reservation_time'>
-						Reservation Time:
-						<input
-							type='time'
-							placeholder='HH:MM'
-							pattern='[0-9]{2}:[0-9]{2}'
-							name='reservation_time'
-							id='reservation_time'
-							required
-							value={formData.reservation_time}
-							onChange={handleChange}
-						/>
-					</label>
-					<label htmlFor='people'>
-						Number of People:
-						<input
-							type='number'
-							name='people'
-							id='people'
-							value={formData.people}
-							onChange={handleChange}
-						/>
-					</label>
-				</div>
-				<div>
-					<button type='submit'>Submit</button>
-					<button type='cancel' onClick={() => history.goBack()}>
-						Cancel
-					</button>
-				</div>
-			</form>
+			<div>
+				<form onSubmit={handleSubmit}>
+					<div>
+						<label htmlFor='first_name'>
+							First Name:
+							<input
+								type='text'
+								name='first_name'
+								id='first_name'
+								required
+								value={formData.first_name}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor='last_name'>
+							Last Name:
+							<input
+								type='text'
+								name='last_name'
+								id='last_name'
+								required
+								value={formData.last_name}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor='mobile_number'>
+							Phone Number:
+							<input
+								type='tel'
+								name='mobile_number'
+								id='mobile_number'
+								required
+								value={formData.mobile_number}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor='reservation_date'>
+							Reservation Date:
+							<input
+								type='date'
+								placeholder='YYYY-MM-DD'
+								pattern='\d{4}-\d{2}-\d{2}'
+								name='reservation_date'
+								id='reservation_date'
+								required
+								value={formData.reservation_date}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor='reservation_time'>
+							Reservation Time:
+							<input
+								type='time'
+								placeholder='HH:MM'
+								pattern='[0-9]{2}:[0-9]{2}'
+								name='reservation_time'
+								id='reservation_time'
+								required
+								value={formData.reservation_time}
+								onChange={handleChange}
+							/>
+						</label>
+						<label htmlFor='people'>
+							Number of People:
+							<input
+								type='number'
+								name='people'
+								id='people'
+								value={formData.people}
+								onChange={handleChange}
+							/>
+						</label>
+					</div>
+					<div>
+						<button type='submit'>Submit</button>
+						<button type='button' onClick={() => history.goBack()}>
+							Cancel
+						</button>
+					</div>
+				</form>
+			</div>
 		</div>
 	);
 };
