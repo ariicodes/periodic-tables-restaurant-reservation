@@ -1,20 +1,21 @@
 const knex = require('../db/connection');
 
 /**
- * List query; lists all reservations for a given date.
+ * List reservations by date
  */
 const list = date => {
+	let dateQuery = date || '';
 	return knex('reservations')
 		.select('*')
-		.where({ reservation_date: date || '' })
+		.where({ reservation_date: dateQuery })
 		.orderBy('reservation_time');
 };
 
 /**
- * Create query; creates a new reservation.
+ * Create a new reservation
  */
 const create = async reservation => {
-	return knex('reservations')
+	return await knex('reservations')
 		.insert(reservation)
 		.returning('*')
 		.then(createdRecords => createdRecords[0]);
@@ -22,5 +23,5 @@ const create = async reservation => {
 
 module.exports = {
 	list,
-  create,
+	create,
 };
