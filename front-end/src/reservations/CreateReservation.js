@@ -63,6 +63,9 @@ const CreateReservation = () => {
 
 	return (
 		<div>
+		<header>
+			<h1>Create Reservation</h1>
+		</header>
 			<ErrorAlert error={reservationsError} />
 			<div>
 				<form onSubmit={handleSubmit}>
