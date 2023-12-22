@@ -18,6 +18,22 @@ const reservationsExists = async (req, res, next) => {
 };
 
 /**
+ * Middleware to validate the existence of a reservation by id
+ */
+const reservationExistsById = async (req, res, next) => {
+	const { reservation_id } = req.params;
+	const reservation = await reservationsService.read(reservation_id);
+	if (reservation) {
+		res.locals.reservation = reservation;
+		return next();
+	}
+	return next({
+		status: 404,
+		message: `Reservation ${reservation_id} cannot be found.`,
+	});
+};
+
+/**
  * Middleware to validate the existence of data
  */
 const dataExists = async (req, res, next) => {
@@ -272,6 +288,14 @@ const create = async (req, res) => {
 	}
 };
 
+/**
+ * Read handler for reservation resources
+ */
+const read = (req, res) => {
+	const { reservation } = res.locals;
+	return res.status(200).json({ data: reservation });
+};
+
 module.exports = {
 	list: [asyncErrorBoundary(reservationsExists), asyncErrorBoundary(list)],
 	create: [
@@ -285,4 +309,5 @@ module.exports = {
 		checkPeople,
 		asyncErrorBoundary(create),
 	],
+	read: [asyncErrorBoundary(reservationExistsById), asyncErrorBoundary(read)],
 };
