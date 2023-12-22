@@ -21,7 +21,18 @@ const create = async reservation => {
 		.then(createdRecords => createdRecords[0]);
 };
 
+/**
+ * Read a reservation
+ */
+const read = async reservation_id => {
+	return await knex('reservations')
+		.select('*')
+		.where({ reservation_id })
+		.first();
+}
+
 module.exports = {
 	list,
 	create,
+	read,
 };
