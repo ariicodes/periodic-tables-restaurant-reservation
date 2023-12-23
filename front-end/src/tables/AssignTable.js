@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from 'react';
-import { useHistory } from 'react-router-dom';
+import { useHistory, useParams } from 'react-router-dom';
 import ErrorAlert from '../layout/ErrorAlert';
 import { listTables, assignTable } from '../utils/api';
-import { useParams } from 'react-router-dom';
 
 const AssignTable = () => {
 	const history = useHistory();
@@ -13,27 +12,27 @@ const AssignTable = () => {
 
 	useEffect(() => {
 		const abortController = new AbortController();
+		function loadTables() {
+			setTableError(null);
+			listTables(abortController.signal)
+				.then(res => setTables(res))
+				.catch(err => setTableError(err));
+		}
 
-		listTables(abortController.signal).then(setTables).catch(setTableError);
+		loadTables();
 
 		return () => abortController.abort();
 	}, []);
 
-	const handleChange = ({ target }) => {
-		setSelectedTable(target.value);
+	const handleChange = e => {
+		setSelectedTable(parseInt(e.target.value));
 	};
 
 	const handleSubmit = async e => {
 		e.preventDefault();
-		const abortController = new AbortController();
 
 		try {
-			const assignedTable = await assignTable(
-				selectedTable,
-				reservation_id,
-				abortController.signal
-			);
-			console.log('TABLE ASSIGNED:', assignedTable);
+			await assignTable(selectedTable, parseInt(reservation_id));
 			history.push(`/dashboard`);
 		} catch (err) {
 			setTableError(err);
@@ -50,14 +49,10 @@ const AssignTable = () => {
 			<div>
 				<form onSubmit={handleSubmit}>
 					<label htmlFor='seat'>Assign Reservation to a Table:</label>
-					<select name='table_id' id='seat'>
+					<select name='table_id' id='seat' onChange={handleChange}>
 						<option value=''>--Please choose a seat--</option>
 						{tables.map(table => (
-							<option
-								key={table.table_id}
-								value={table.table_id}
-								onChange={handleChange}
-							>
+							<option key={table.table_id} value={table.table_id}>
 								{table.table_name} - {table.capacity}
 							</option>
 						))}
