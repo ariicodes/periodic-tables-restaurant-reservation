@@ -80,11 +80,31 @@ function Dashboard({ date }) {
 			<ErrorAlert error={reservationsError} />
 			<div>
 				{reservations.length > 0 ? (
-					<ReservationsList
-						reservations={reservations}
-						formatAsDate={formatAsDate}
-						formatAsTime={formatAsTime}
-					/>
+					reservations.map(
+						({
+							first_name,
+							last_name,
+							mobile_number,
+							reservation_date,
+							reservation_time,
+							people,
+							reservation_id,
+						}) => (
+							<div key={reservation_id}>
+								<ReservationsList
+									first_name={first_name}
+									last_name={last_name}
+									mobile_number={mobile_number}
+									reservation_date={reservation_date}
+									reservation_time={reservation_time}
+									people={parseInt(people)}
+									reservation_id={parseInt(reservation_id)}
+									formatAsDate={formatAsDate}
+									formatAsTime={formatAsTime}
+								/>
+							</div>
+						)
+					)
 				) : (
 					<h5>No reservations</h5>
 				)}

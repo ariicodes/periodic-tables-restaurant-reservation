@@ -1,22 +1,28 @@
 import React from 'react';
 
-const ReservationsList = ({ reservations, formatAsDate, formatAsTime }) => {
+const ReservationsList = ({
+	first_name,
+	last_name,
+	mobile_number,
+	reservation_date,
+	reservation_time,
+	people,
+	reservation_id,
+	formatAsDate,
+	formatAsTime,
+}) => {
 	return (
 		<div>
-			{reservations.map(reservation => (
-				<div key={reservation.reservation_id}>
-					<p>
-						Name: {reservation.first_name} {reservation.last_name}
-					</p>
-					<p>Phone Number: {reservation.mobile_number}</p>
-					<p>Reservation Date: {formatAsDate(reservation.reservation_date)}</p>
-					<p>Reservation Time: {formatAsTime(reservation.reservation_time)}</p>
-					<p>Party of: {reservation.people}</p>
-					<button type='button'>
-						<a href={`/reservations/${reservation.reservation_id}/seat`}>Seat</a>
-					</button>
-				</div>
-			))}
+			<p>
+				Name: {first_name} {last_name}
+			</p>
+			<p>Phone Number: {mobile_number}</p>
+			<p>Reservation Date: {formatAsDate(reservation_date)}</p>
+			<p>Reservation Time: {formatAsTime(reservation_time)}</p>
+			<p>Party of: {people}</p>
+			<a href={`/reservations/${reservation_id}/seat`}>
+				<button type='button'>Seat</button>
+			</a>
 		</div>
 	);
 };
