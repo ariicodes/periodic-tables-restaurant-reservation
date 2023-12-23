@@ -7,7 +7,7 @@ const TablesList = ({ tables }) => {
 				<div key={table.table_id}>
 					<p>Table Name: {table.table_name}</p>
 					<p>Capacity: {table.capacity}</p>
-					<p>Occupied: {table.reservation_id ? 'Occupied' : 'Free'}</p>
+					<p>Status: {table.reservation_id ? 'Occupied' : 'Free'}</p>
 				</div>
 			))}
 		</div>
