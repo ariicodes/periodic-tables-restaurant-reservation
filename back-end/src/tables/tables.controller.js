@@ -125,7 +125,7 @@ const tableIsOccupied = async (req, res, next) => {
 	if (table.reservation_id) {
 		return next({
 			status: 400,
-			message: `table_id ${table_id} is occupied.`,
+			message: `Table ${table.table_name} is occupied.`,
 		});
 	}
 	return next();
@@ -153,7 +153,7 @@ const create = async (req, res) => {
 			table_name,
 			capacity,
 		};
-		
+
 		await tablesService.create(newTable);
 		res.status(201).json({ data: newTable });
 	} catch (err) {
