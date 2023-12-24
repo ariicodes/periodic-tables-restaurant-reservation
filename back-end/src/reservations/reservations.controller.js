@@ -281,8 +281,8 @@ const create = async (req, res) => {
 			reservation_time,
 			people,
 		};
-		await reservationsService.create(newReservation);
-		res.status(201).json({ data: newReservation });
+		const reservation = await reservationsService.create(newReservation);
+		res.status(201).json({ data: reservation });
 	} catch (error) {
 		res.status(500).json({ error: error.message });
 	}
