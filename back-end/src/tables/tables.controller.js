@@ -131,6 +131,36 @@ const tableIsOccupied = async (req, res, next) => {
 	return next();
 };
 
+/**
+ * Middleware to check if table_id exists
+ */
+const tableIdExists = async (req, res, next) => {
+	const { table_id } = req.params;
+	const table = await tablesService.read(table_id);
+	if (!table) {
+		return next({
+			status: 404,
+			message: `table_id ${table_id} does not exist.`,
+		});
+	}
+	return next();
+};
+
+/**
+ * Middleware to check if table isn'y occupied
+ */
+const tableIsNotOccupied = async (req, res, next) => {
+	const { table_id } = req.params;
+	const table = await tablesService.read(table_id);
+	if (!table.reservation_id) {
+		return next({
+			status: 400,
+			message: `Table ${table.table_name} is not occupied.`,
+		});
+	}
+	return next();
+};
+
 //////////////////////////////////////////////
 /// ---MIDDLEWARE ABOVE, HANDLERS BELOW--- ///
 //////////////////////////////////////////////
@@ -148,14 +178,10 @@ const list = async (req, res) => {
  */
 const create = async (req, res) => {
 	try {
-		const { data: { table_name, capacity } = {} } = req.body;
-		const newTable = {
-			table_name,
-			capacity,
-		};
+		const { data } = req.body;
+		const table = await tablesService.create(data);
 
-		await tablesService.create(newTable);
-		res.status(201).json({ data: newTable });
+		res.status(201).json({ data: table });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
@@ -167,13 +193,21 @@ const create = async (req, res) => {
 const update = async (req, res) => {
 	const { table_id } = req.params;
 	const { reservation_id } = req.body.data;
-
 	try {
-		await tablesService.update({ table_id, reservation_id });
+		await tablesService.update(table_id, reservation_id);
 		res.status(200).json({ data: { reservation_id: reservation_id } });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
+};
+
+/**
+ * Delete handler for table resources
+ */
+const destroy = async (req, res) => {
+	const { table_id } = req.params;
+	await tablesService.destroy(table_id);
+	res.status(200).json({});
 };
 
 module.exports = {
@@ -193,4 +227,5 @@ module.exports = {
 		tableIsOccupied,
 		asyncErrorBoundary(update),
 	],
+	delete: [tableIdExists, tableIsNotOccupied, asyncErrorBoundary(destroy)],
 };
