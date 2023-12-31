@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import ErrorAlert from '../layout/ErrorAlert';
-import { listTables, assignTable } from '../utils/api';
+import { listTables, assignTable, updateReservationStatus } from '../utils/api';
 
 const AssignTable = () => {
 	const history = useHistory();
@@ -30,9 +30,15 @@ const AssignTable = () => {
 
 	const handleSubmit = async e => {
 		e.preventDefault();
+		const abortController = new AbortController();
 
 		try {
 			await assignTable(selectedTable, parseInt(reservation_id));
+			await updateReservationStatus(
+				reservation_id,
+				'seated',
+				abortController.signal
+			);
 			history.push(`/dashboard`);
 		} catch (err) {
 			setTableError(err);
