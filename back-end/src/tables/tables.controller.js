@@ -161,6 +161,23 @@ const tableIsNotOccupied = async (req, res, next) => {
 	return next();
 };
 
+/**
+ * Middleware to check if table is already seated
+ */
+const tableIsAlreadySeated = async (req, res, next) => {
+	const { reservation_id } = req.body.data;
+	const { table_id } = req.params;
+	const table = await tablesService.read(table_id);
+	const reservation = await reservationsService.read(reservation_id);
+	if (reservation.status === 'seated') {
+		return next({
+			status: 400,
+			message: `Table ${table.table_name} is already seated.`,
+		});
+	}
+	return next();
+};
+
 //////////////////////////////////////////////
 /// ---MIDDLEWARE ABOVE, HANDLERS BELOW--- ///
 //////////////////////////////////////////////
@@ -195,6 +212,7 @@ const update = async (req, res) => {
 	const { reservation_id } = req.body.data;
 	try {
 		await tablesService.update(table_id, reservation_id);
+		await reservationsService.update(reservation_id, 'seated');
 		res.status(200).json({ data: { reservation_id: reservation_id } });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
@@ -207,6 +225,7 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
 	const { table_id } = req.params;
 	await tablesService.destroy(table_id);
+	await reservationsService.update(req.body.data.reservation_id, 'finished');
 	res.status(200).json({});
 };
 
@@ -225,6 +244,7 @@ module.exports = {
 		reservationIdExists,
 		tableHasSufficientCapacity,
 		tableIsOccupied,
+		tableIsAlreadySeated,
 		asyncErrorBoundary(update),
 	],
 	delete: [tableIdExists, tableIsNotOccupied, asyncErrorBoundary(destroy)],
