@@ -7,6 +7,7 @@ import { today } from '../utils/date-time';
 import CreateReservation from '../reservations/CreateReservation';
 import CreateTable from '../tables/CreateTable';
 import AssignTable from '../tables/AssignTable';
+import ReservationSearch from '../reservations/ReservationSearch';
 
 /**
  * Defines all the routes for the application.
@@ -18,6 +19,9 @@ import AssignTable from '../tables/AssignTable';
 function Routes() {
 	return (
 		<Switch>
+		<Route exact={true} path='/search'>
+			<ReservationSearch />
+		</Route>
 			<Route exact={true} path='/reservations/:reservation_id/seat'>
 				<AssignTable />
 			</Route>
