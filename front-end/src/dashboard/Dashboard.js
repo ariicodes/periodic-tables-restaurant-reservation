@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { listReservations, listTables, finishTable } from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
-import ReservationsList from '../reservations/ReservationsList';
+import Reservation from '../reservations/Reservation';
 import { formatAsDate, formatAsTime, previous, next } from '../utils/date-time';
 import useQuery from '../utils/useQuery';
 import { useHistory } from 'react-router-dom';
@@ -74,8 +74,16 @@ function Dashboard({ date }) {
 					abortController.signal
 				);
 
+				const updatedReservations = await listReservations(
+					{ date: selectedDate },
+					abortController.signal
+				);
+				setReservations(updatedReservations);
+
 				const updatedTables = await listTables(abortController.signal);
 				setTables(updatedTables);
+
+				history.push(`/dashboard?date=${selectedDate}`);
 			} catch (err) {
 				setTablesError(err);
 			}
@@ -111,9 +119,10 @@ function Dashboard({ date }) {
 							reservation_time,
 							people,
 							reservation_id,
+							status,
 						}) => (
 							<div key={reservation_id}>
-								<ReservationsList
+								<Reservation
 									first_name={first_name}
 									last_name={last_name}
 									mobile_number={mobile_number}
@@ -123,6 +132,7 @@ function Dashboard({ date }) {
 									reservation_id={parseInt(reservation_id)}
 									formatAsDate={formatAsDate}
 									formatAsTime={formatAsTime}
+									status={status}
 								/>
 							</div>
 						)
