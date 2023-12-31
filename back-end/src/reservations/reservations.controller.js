@@ -5,12 +5,22 @@ const asyncErrorBoundary = require('../errors/asyncErrorBoundary');
  * Middleware to validate the existence of reservations for a specific date
  */
 const reservationsExists = async (req, res, next) => {
-	const { date } = req.query;
-	let reservations = await reservationsService.list(date);
+	const { date, mobile_number } = req.query;
+	let reservations = null;
+	if (date) {
+		reservations = await reservationsService.list(date);
+		reservations = reservations.filter(
+			reservation => reservation.status !== 'finished'
+		);
+	} else if (mobile_number) {
+		reservations = await reservationsService.search(mobile_number);
+	}
+
 	if (reservations) {
 		res.locals.reservations = reservations;
 		return next();
 	}
+
 	return next({
 		status: 404,
 		message: `Reservations can not be found.`,
@@ -308,10 +318,7 @@ const checkIfCurrentlyFinished = (req, res, next) => {
  */
 const list = (req, res) => {
 	const { reservations } = res.locals;
-	const filteredReservations = reservations.filter(
-		reservation => reservation.status !== 'finished'
-	);
-	return res.json({ data: filteredReservations });
+	return res.json({ data: reservations });
 };
 
 /**
