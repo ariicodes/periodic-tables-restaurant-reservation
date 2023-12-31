@@ -247,6 +247,59 @@ const checkPeople = (req, res, next) => {
 	}
 	return next();
 };
+
+/**
+ * Middlewares to check if reservation status is valid
+ */
+const checkSeatedStatus = (req, res, next) => {
+	const { data: { status } = {} } = req.body;
+	if (status === 'seated') {
+		throw {
+			status: 400,
+			message: 'Reservation status cannot be seated.',
+		};
+	}
+	return next();
+};
+
+const checkFinishedStatus = (req, res, next) => {
+	const { data: { status } = {} } = req.body;
+	if (status === 'finished') {
+		throw {
+			status: 400,
+			message: 'Reservation status cannot be finished.',
+		};
+	}
+	return next();
+};
+
+/**
+ * Middleware to check for unknown status
+ */
+const checkUnknownStatus = (req, res, next) => {
+	const { data: { status } = {} } = req.body;
+	if (status === 'unknown') {
+		throw {
+			status: 400,
+			message: 'Reservation status cannot be unknown.',
+		};
+	}
+	return next();
+};
+
+/**
+ * Middleware to check if status is currently finished
+ */
+const checkIfCurrentlyFinished = (req, res, next) => {
+	const { reservation } = res.locals;
+	if (reservation.status === 'finished') {
+		throw {
+			status: 400,
+			message: 'A finished reservation cannot be updated.',
+		};
+	}
+	return next();
+};
 //////////////////////////////////////////////
 /// ---MIDDLEWARE ABOVE, HANDLERS BELOW--- ///
 //////////////////////////////////////////////
@@ -255,7 +308,10 @@ const checkPeople = (req, res, next) => {
  */
 const list = (req, res) => {
 	const { reservations } = res.locals;
-	return res.json({ data: reservations });
+	const filteredReservations = reservations.filter(
+		reservation => reservation.status !== 'finished'
+	);
+	return res.json({ data: filteredReservations });
 };
 
 /**
@@ -263,28 +319,12 @@ const list = (req, res) => {
  */
 const create = async (req, res) => {
 	try {
-		const {
-			data: {
-				first_name,
-				last_name,
-				mobile_number,
-				reservation_date,
-				reservation_time,
-				people,
-			} = {},
-		} = req.body;
-		const newReservation = {
-			first_name,
-			last_name,
-			mobile_number,
-			reservation_date,
-			reservation_time,
-			people,
-		};
-		const reservation = await reservationsService.create(newReservation);
+		const { data } = req.body;
+		const reservation = await reservationsService.create(data);
+
 		res.status(201).json({ data: reservation });
-	} catch (error) {
-		res.status(500).json({ error: error.message });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
 	}
 };
 
@@ -294,6 +334,20 @@ const create = async (req, res) => {
 const read = (req, res) => {
 	const { reservation } = res.locals;
 	return res.status(200).json({ data: reservation });
+};
+
+/**
+ * Update handler for reservation resources
+ */
+const update = async (req, res, next) => {
+	const { reservation_id } = req.params;
+	const { status } = req.body.data;
+	try {
+		await reservationsService.update(reservation_id, status);
+		res.status(200).json({ data: { status: status } });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
 };
 
 module.exports = {
@@ -307,7 +361,16 @@ module.exports = {
 		checkPastDate,
 		checkTimeValidity,
 		checkPeople,
+		checkSeatedStatus,
+		checkFinishedStatus,
 		asyncErrorBoundary(create),
 	],
 	read: [asyncErrorBoundary(reservationExistsById), asyncErrorBoundary(read)],
+	update: [
+		dataExists,
+		reservationExistsById,
+		checkUnknownStatus,
+		checkIfCurrentlyFinished,
+		asyncErrorBoundary(update),
+	],
 };
