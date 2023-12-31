@@ -1,5 +1,4 @@
 import React from 'react';
-import { updateReservationStatus } from '../utils/api';
 import { useHistory } from 'react-router-dom';
 
 const Reservation = ({
@@ -18,13 +17,7 @@ const Reservation = ({
 
 	const statusHandler = async e => {
 		e.preventDefault();
-		const abortController = new AbortController();
 		try {
-			await updateReservationStatus(
-				reservation_id,
-				'seated',
-				abortController.signal
-			);
 			history.push(`/reservations/${reservation_id}/seat`);
 		} catch (err) {
 			console.error(err);
