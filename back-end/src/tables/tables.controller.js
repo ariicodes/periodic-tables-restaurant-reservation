@@ -225,7 +225,6 @@ const update = async (req, res) => {
 const destroy = async (req, res) => {
 	const { table_id } = req.params;
 	await tablesService.destroy(table_id);
-	await reservationsService.update(req.body.data.reservation_id, 'finished');
 	res.status(200).json({});
 };
 
