@@ -35,13 +35,24 @@ const update = async (table_id, reservation_id) => {
 };
 
 /**
- * Delete a reservation_id from a table
+ * Delete a reservation_id from a table and update the reservation status to finished using knex transaction
  */
 const destroy = async table_id => {
-	return await knex('tables')
-		.where({ table_id })
-		.update({ reservation_id: null }, '*')
-		.then(updatedRecords => updatedRecords[0]);
+	return await knex.transaction(async trx => {
+		const table = await knex('tables')
+			.select('*')
+			.where({ table_id })
+			.first()
+			.transacting(trx);
+		await knex('tables')
+			.where({ table_id })
+			.update({ reservation_id: null }, '*')
+			.transacting(trx);
+		await knex('reservations')
+			.where({ reservation_id: table.reservation_id })
+			.update({ status: 'finished' }, '*')
+			.transacting(trx);
+	});
 };
 
 module.exports = {
