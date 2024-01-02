@@ -35,7 +35,7 @@ const read = async reservation_id => {
 /**
  * Update a reservation status
  */
-const update = async (reservation_id, status) => {
+const updateStatus = async (reservation_id, status) => {
 	return await knex('reservations')
 		.where({ reservation_id })
 		.update({ status }, '*')
@@ -55,10 +55,21 @@ const search = mobile_number => {
 		.orderBy('reservation_date');
 };
 
+/**
+ * Edit an existing reservation
+ */
+const edit = async (reservation_id, reservation) => {
+	return await knex('reservations')
+		.where({ reservation_id })
+		.update(reservation, '*')
+		.then(updatedRecords => updatedRecords[0]);
+};
+
 module.exports = {
 	list,
 	create,
 	read,
-	update,
+	updateStatus,
 	search,
+	edit,
 };

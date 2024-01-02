@@ -344,14 +344,28 @@ const read = (req, res) => {
 };
 
 /**
- * Update handler for reservation resources
+ * Update status handler for reservation resources
  */
-const update = async (req, res, next) => {
+const updateStatus = async (req, res, next) => {
 	const { reservation_id } = req.params;
 	const { status } = req.body.data;
 	try {
-		await reservationsService.update(reservation_id, status);
+		await reservationsService.updateStatus(reservation_id, status);
 		res.status(200).json({ data: { status: status } });
+	} catch (err) {
+		res.status(500).json({ error: err.message });
+	}
+};
+
+/**
+ * Edit handler for reservation resources
+ */
+const edit = async (req, res) => {
+	const { reservation_id } = req.params;
+	const { data } = req.body;
+	try {
+		const reservation = await reservationsService.edit(reservation_id, data);
+		res.status(200).json({ data: reservation });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
 	}
@@ -373,11 +387,25 @@ module.exports = {
 		asyncErrorBoundary(create),
 	],
 	read: [asyncErrorBoundary(reservationExistsById), asyncErrorBoundary(read)],
-	update: [
+	updateStatus: [
 		dataExists,
 		reservationExistsById,
 		checkUnknownStatus,
 		checkIfCurrentlyFinished,
-		asyncErrorBoundary(update),
+		asyncErrorBoundary(updateStatus),
+	],
+	edit: [
+		dataExists,
+		reservationExistsById,
+		checkRequiredFields,
+		checkTypes,
+		checkDateFormat,
+		checkTuesday,
+		checkPastDate,
+		checkTimeValidity,
+		checkPeople,
+		checkSeatedStatus,
+		checkFinishedStatus,
+		asyncErrorBoundary(edit),
 	],
 };
