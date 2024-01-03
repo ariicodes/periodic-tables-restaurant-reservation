@@ -212,7 +212,7 @@ const update = async (req, res) => {
 	const { reservation_id } = req.body.data;
 	try {
 		await tablesService.update(table_id, reservation_id);
-		await reservationsService.update(reservation_id, 'seated');
+		await reservationsService.updateStatus(reservation_id, 'seated');
 		res.status(200).json({ data: { reservation_id: reservation_id } });
 	} catch (err) {
 		res.status(500).json({ error: err.message });
