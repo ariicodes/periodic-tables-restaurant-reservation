@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { useHistory, useParams } from 'react-router-dom';
 import ErrorAlert from '../layout/ErrorAlert';
 import { readReservation, updateReservation } from '../utils/api';
+import { formatAsTime } from '../utils/date-time';
 
 const EditReservation = () => {
 	const history = useHistory();
@@ -28,23 +29,6 @@ const EditReservation = () => {
 		return formattedNumber;
 	};
 
-	const handleChange = e => {
-		const { name, value } = e.target;
-		let newValue =
-			name === 'mobile_number'
-				? formatPhoneNumber(value)
-				: name === 'people'
-				? parseInt(value, 10)
-				: name === 'reservation_time'
-				? value.slice(0, 5)
-				: value;
-
-		setFormData({
-			...formData,
-			[name]: newValue,
-		});
-	};
-
 	useEffect(() => {
 		const abortController = new AbortController();
 
@@ -58,6 +42,7 @@ const EditReservation = () => {
 				setFormData({
 					...reservation,
 					reservation_date: reservation.reservation_date.slice(0, 10),
+					reservation_time: formatAsTime(reservation.reservation_time),
 				});
 			} catch (err) {
 				setReservationsError(err);
@@ -66,6 +51,23 @@ const EditReservation = () => {
 
 		loadReservation();
 	}, [reservation_id]);
+
+	const handleChange = e => {
+		const { name, value } = e.target;
+		const newValue =
+			name === 'mobile_number'
+				? formatPhoneNumber(value)
+				: name === 'people'
+				? parseInt(value, 10)
+				: name === 'reservation_time'
+				? formatAsTime(value)
+				: value;
+
+		setFormData({
+			...formData,
+			[name]: newValue,
+		});
+	};
 
 	const handleSubmit = async e => {
 		e.preventDefault();
