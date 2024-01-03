@@ -1,5 +1,10 @@
 import React, { useEffect, useState } from 'react';
-import { listReservations, listTables, finishTable } from '../utils/api';
+import {
+	listReservations,
+	listTables,
+	finishTable,
+	updateReservationStatus,
+} from '../utils/api';
 import ErrorAlert from '../layout/ErrorAlert';
 import Reservation from '../reservations/Reservation';
 import { formatAsDate, formatAsTime, previous, next } from '../utils/date-time';
@@ -90,6 +95,32 @@ function Dashboard({ date }) {
 		}
 	};
 
+	const handleCancel = async reservationId => {
+		const result = window.confirm(
+			'Do you want to cancel this reservation? This cannot be undone.'
+		);
+		if (result) {
+			const abortController = new AbortController();
+			try {
+				await updateReservationStatus(
+					reservationId,
+					'cancelled',
+					abortController.signal
+				);
+
+				const updatedReservations = await listReservations(
+					{ date: selectedDate },
+					abortController.signal
+				);
+				setReservations(updatedReservations);
+
+				history.push(`/dashboard?date=${selectedDate}`);
+			} catch (err) {
+				console.error(err);
+			}
+		}
+	};
+
 	return (
 		<main>
 			<h1>Dashboard</h1>
@@ -133,6 +164,7 @@ function Dashboard({ date }) {
 									formatAsDate={formatAsDate}
 									formatAsTime={formatAsTime}
 									status={status}
+									handleCancel={handleCancel}
 								/>
 							</div>
 						)
