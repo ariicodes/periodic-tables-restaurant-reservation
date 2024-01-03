@@ -32,10 +32,14 @@ const reservationsExists = async (req, res, next) => {
  */
 const reservationExistsById = async (req, res, next) => {
 	const { reservation_id } = req.params;
-	const reservation = await reservationsService.read(reservation_id);
-	if (reservation) {
-		res.locals.reservation = reservation;
-		return next();
+	if (!isNaN(parseInt(reservation_id))) {
+		const reservation = await reservationsService.read(
+			parseInt(reservation_id)
+		);
+		if (reservation) {
+			res.locals.reservation = reservation;
+			return next();
+		}
 	}
 	return next({
 		status: 404,
