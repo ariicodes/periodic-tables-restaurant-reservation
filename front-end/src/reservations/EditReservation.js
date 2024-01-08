@@ -74,12 +74,9 @@ const EditReservation = () => {
 		const abortController = new AbortController();
 
 		try {
-			const updatedReservation = await updateReservation(
-				formData,
-				abortController.signal
-			);
-			console.log('RESERVATION UPDATED:', updatedReservation);
-			history.goBack();
+			await updateReservation(formData, abortController.signal);
+
+			history.push(`/dashboard?date=${formData.reservation_date}`);
 		} catch (err) {
 			setReservationsError(err);
 			console.error('ERROR UPDATING RESERVATION:', err);
