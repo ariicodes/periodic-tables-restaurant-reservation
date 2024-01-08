@@ -123,60 +123,88 @@ function Dashboard({ date }) {
 
 	return (
 		<main>
-			<h1>Dashboard</h1>
-			<div className='d-md-flex mb-3'>
-				<h4 className='mb-0'>Reservations for {urlDate || date}</h4>
+			<div className='d-flex flex-column align-items-center'>
+				<h1 className='fw-bold'>Dashboard</h1>
+				<div className='d-md-flex mb-3'>
+					<h4 className='mb-0 text-center'>
+						Reservations for <span className='fw-bold'>{urlDate || date}</span>
+					</h4>
+				</div>
+				<div className='container' style={{ marginBottom: '12px' }}>
+					<div className='row gx-5 gy-2'>
+						<div className='col-md'>
+							<button
+								type='button'
+								onClick={previousHandler}
+								className='btn bg-info-subtle w-100 fw-bold'
+							>
+								Previous
+							</button>
+						</div>
+						<div className='col-md'>
+							<button
+								type='button'
+								onClick={todayHandler}
+								className='btn bg-info-subtle w-100 fw-bold'
+							>
+								Today
+							</button>
+						</div>
+						<div className='col-md'>
+							<button
+								type='button'
+								onClick={nextHandler}
+								className='btn bg-info-subtle w-100 fw-bold'
+							>
+								Next
+							</button>
+						</div>
+					</div>
+				</div>
 			</div>
-			<div>
-				<button type='button' onClick={previousHandler}>
-					Previous
-				</button>
-				<button type='button' onClick={todayHandler}>
-					Today
-				</button>
-				<button type='button' onClick={nextHandler}>
-					Next
-				</button>
-			</div>
-			<ErrorAlert error={reservationsError} />
-			<div>
-				{reservations.length > 0 ? (
-					reservations.map(
-						({
-							first_name,
-							last_name,
-							mobile_number,
-							reservation_date,
-							reservation_time,
-							people,
-							reservation_id,
-							status,
-						}) => (
-							<div key={reservation_id}>
-								<Reservation
-									first_name={first_name}
-									last_name={last_name}
-									mobile_number={mobile_number}
-									reservation_date={reservation_date}
-									reservation_time={reservation_time}
-									people={parseInt(people)}
-									reservation_id={parseInt(reservation_id)}
-									formatAsDate={formatAsDate}
-									formatAsTime={formatAsTime}
-									status={status}
-									handleCancel={handleCancel}
-								/>
-							</div>
-						)
-					)
-				) : (
-					<h5>No reservations</h5>
-				)}
-			</div>
-			<div>
-				<h4>Tables</h4>
-				<ErrorAlert error={tablesError} />
-				<TablesList tables={tables} handleFinish={handleFinish} />
+			<div className='container'>
+				<div className='row g-4'>
+					<div className='col-md'>
+						<ErrorAlert error={reservationsError} />
+						{reservations.length > 0 ? (
+							reservations.map(
+								({
+									first_name,
+									last_name,
+									mobile_number,
+									reservation_date,
+									reservation_time,
+									people,
+									reservation_id,
+									status,
+								}) => (
+									<div key={reservation_id}>
+										<Reservation
+											first_name={first_name}
+											last_name={last_name}
+											mobile_number={mobile_number}
+											reservation_date={reservation_date}
+											reservation_time={reservation_time}
+											people={parseInt(people)}
+											reservation_id={parseInt(reservation_id)}
+											formatAsDate={formatAsDate}
+											formatAsTime={formatAsTime}
+											status={status}
+											handleCancel={handleCancel}
+										/>
+									</div>
+								)
+							)
+						) : (
+							<h4 className='fw-bold'>No reservations</h4>
+						)}
+					</div>
+					<div className='col-md'>
+						<h4 className='text-center fw-bold'>Tables</h4>
+						<ErrorAlert error={tablesError} />
+						<TablesList tables={tables} handleFinish={handleFinish} />
+					</div>
+				</div>
 			</div>
 		</main>
 	);
