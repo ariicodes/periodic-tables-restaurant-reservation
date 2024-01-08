@@ -34,54 +34,70 @@ const ReservationSearch = () => {
 	};
 
 	return (
-		<div>
+		<div className='container'>
+			<h1 className='text-center'>Search for a reservation</h1>
 			<ErrorAlert error={reservationsError} />
 			<form onSubmit={handleSubmit}>
-				<label htmlFor='mobile_number'>Enter a customer's phone number:</label>
-				<input
-					name='mobile_number'
-					id='mobile_number'
-					type='tel'
-					onChange={handleChange}
-					value={mobileNumber}
-					required
-				/>
-				<button type='submit'>Find</button>
+				<div className='container d-flex flex-column'>
+					<label htmlFor='mobile_number' className='form-label fw-bold'>
+						Enter a customer's phone number:
+					</label>
+					<input
+						name='mobile_number'
+						id='mobile_number'
+						type='tel'
+						onChange={handleChange}
+						value={mobileNumber}
+						required
+						className='form-control'
+					/>
+					<div className='align-self-end'>
+						<button type='submit' className='btn btn-primary my-2'>
+							Find
+						</button>
+					</div>
+				</div>
 			</form>
 			<div>
 				{reservations.length > 0 ? (
 					<div>
-          <h4>Reservations:</h4>
-						{reservations.map(
-							({
-								first_name,
-								last_name,
-								mobile_number,
-								reservation_date,
-								reservation_time,
-								people,
-								reservation_id,
-								status,
-							}) => (
-								<div key={reservation_id}>
-									<Reservation
-										first_name={first_name}
-										last_name={last_name}
-										mobile_number={mobile_number}
-										reservation_date={reservation_date}
-										reservation_time={reservation_time}
-										people={parseInt(people)}
-										reservation_id={parseInt(reservation_id)}
-										formatAsDate={formatAsDate}
-										formatAsTime={formatAsTime}
-										status={status}
-									/>
-								</div>
-							)
-						)}
+						<h4>Reservations:</h4>
+						<div className='d-flex flex-row'>
+							{reservations.map(
+								({
+									first_name,
+									last_name,
+									mobile_number,
+									reservation_date,
+									reservation_time,
+									people,
+									reservation_id,
+									status,
+								}) => (
+									<div key={reservation_id} className='container mx-2'>
+										<div className='row'>
+											<div className='col-md-4'>
+												<Reservation
+													first_name={first_name}
+													last_name={last_name}
+													mobile_number={mobile_number}
+													reservation_date={reservation_date}
+													reservation_time={reservation_time}
+													people={parseInt(people)}
+													reservation_id={parseInt(reservation_id)}
+													formatAsDate={formatAsDate}
+													formatAsTime={formatAsTime}
+													status={status}
+												/>
+											</div>
+										</div>
+									</div>
+								)
+							)}
+						</div>
 					</div>
 				) : (
-					<h5>No reservations found</h5>
+					<h5 className='text-center'>No reservations found</h5>
 				)}
 			</div>
 		</div>

@@ -62,15 +62,19 @@ const CreateReservation = () => {
 	};
 
 	return (
-		<div>
-		<header>
-			<h1>Create Reservation</h1>
-		</header>
+		<div className='d-flex flex-column align-items-center'>
+			<header>
+				<h1 className='text-center'>Create Reservation</h1>
+			</header>
 			<ErrorAlert error={reservationsError} />
 			<div>
-				<form onSubmit={handleSubmit}>
+				<form onSubmit={handleSubmit} className='container d-flex flex-column'>
 					<div>
-						<label htmlFor='first_name'>
+						<label
+							htmlFor='first_name'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							First Name:
 							<input
 								type='text'
@@ -79,9 +83,14 @@ const CreateReservation = () => {
 								required
 								value={formData.first_name}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
-						<label htmlFor='last_name'>
+						<label
+							htmlFor='last_name'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							Last Name:
 							<input
 								type='text'
@@ -90,9 +99,14 @@ const CreateReservation = () => {
 								required
 								value={formData.last_name}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
-						<label htmlFor='mobile_number'>
+						<label
+							htmlFor='mobile_number'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							Phone Number:
 							<input
 								type='tel'
@@ -101,9 +115,14 @@ const CreateReservation = () => {
 								required
 								value={formData.mobile_number}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
-						<label htmlFor='reservation_date'>
+						<label
+							htmlFor='reservation_date'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							Reservation Date:
 							<input
 								type='date'
@@ -114,9 +133,14 @@ const CreateReservation = () => {
 								required
 								value={formData.reservation_date}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
-						<label htmlFor='reservation_time'>
+						<label
+							htmlFor='reservation_time'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							Reservation Time:
 							<input
 								type='time'
@@ -127,9 +151,14 @@ const CreateReservation = () => {
 								required
 								value={formData.reservation_time}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
-						<label htmlFor='people'>
+						<label
+							htmlFor='people'
+							className='form-label fw-bold'
+							style={{ marginRight: '10px' }}
+						>
 							Number of People:
 							<input
 								type='number'
@@ -137,12 +166,24 @@ const CreateReservation = () => {
 								id='people'
 								value={formData.people}
 								onChange={handleChange}
+								className='form-control'
 							/>
 						</label>
 					</div>
-					<div>
-						<button type='submit'>Submit</button>
-						<button type='button' onClick={() => history.goBack()}>
+					<div className='align-self-end'>
+						<button
+							type='submit'
+							className='btn btn-primary'
+							style={{ marginRight: '10px' }}
+						>
+							Submit
+						</button>
+						<button
+							type='button'
+							onClick={() => history.goBack()}
+							className='btn btn-danger'
+							style={{ marginRight: '10px' }}
+						>
 							Cancel
 						</button>
 					</div>
