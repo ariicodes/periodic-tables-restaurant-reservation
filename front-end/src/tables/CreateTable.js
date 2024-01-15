@@ -39,39 +39,62 @@ const CreateTable = () => {
 	};
 
 	return (
-		<div>
+		<div className='d-flex flex-column align-items-center'>
 			<header>
-				<h1>Create Table</h1>
+				<h1 className='text-center font-weight-bold'>Create Table</h1>
 			</header>
 			<ErrorAlert error={tableError} />
 			<div>
-				<form onSubmit={handleSubmit}>
-					<div>
-						<label htmlFor='table_name'>Table Name:</label>
-						<input
-							type='text'
-							name='table_name'
-							id='table_name'
-							minLength={2}
-							required
-							value={formData.table_name}
-							onChange={handleChange}
-						/>
+				<form onSubmit={handleSubmit} className='container d-flex flex-column'>
+					<div className='d-flex flex-column flex-md-row'>
+						<label
+							htmlFor='table_name'
+							className='font-weight-bold'
+							style={{ marginRight: '10px' }}
+						>
+							Table Name:
+							<input
+								type='text'
+								name='table_name'
+								id='table_name'
+								minLength={2}
+								required
+								value={formData.table_name}
+								onChange={handleChange}
+								className='form-control'
+							/>
+						</label>
+						<label
+							htmlFor='capacity'
+							className='font-weight-bold'
+							style={{ marginRight: '10px' }}
+						>
+							Capacity:
+							<input
+								type='number'
+								name='capacity'
+								id='capacity'
+								required
+								value={formData.capacity}
+								onChange={handleChange}
+								className='form-control'
+							/>
+						</label>
 					</div>
-					<div>
-						<label htmlFor='capacity'>Capacity:</label>
-						<input
-							type='number'
-							name='capacity'
-							id='capacity'
-							required
-							value={formData.capacity}
-							onChange={handleChange}
-						/>
-					</div>
-					<div>
-						<button type='submit'>Submit</button>
-						<button type='button' onClick={() => history.goBack()}>
+					<div className='align-self-center align-self-md-end'>
+						<button
+							type='submit'
+							className='btn btn-primary'
+							style={{ marginRight: '10px' }}
+						>
+							Submit
+						</button>
+						<button
+							type='button'
+							onClick={() => history.goBack()}
+							className='btn btn-danger'
+							style={{ marginRight: '10px' }}
+						>
 							Cancel
 						</button>
 					</div>

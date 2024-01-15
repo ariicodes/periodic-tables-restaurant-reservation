@@ -47,15 +47,23 @@ const AssignTable = () => {
 	};
 
 	return (
-		<div>
+		<div className='container'>
 			<header>
-				<h1>Assign Table</h1>
+				<h1 className='text-center font-weight-bold'>Assign Table</h1>
 			</header>
 			<ErrorAlert error={tableError} />
-			<div>
-				<form onSubmit={handleSubmit}>
-					<label htmlFor='seat'>Assign Reservation to a Table:</label>
-					<select name='table_id' id='seat' onChange={handleChange}>
+			<form onSubmit={handleSubmit}>
+				<div className='container d-flex flex-column'>
+					<label htmlFor='seat' className='font-weight-bold'>
+						Assign Reservation to a Table:
+					</label>
+					<select
+						name='table_id'
+						id='seat'
+						onChange={handleChange}
+						className='custom-select'
+						style={{ marginBottom: '8px' }}
+					>
 						<option value=''>--Please choose a seat--</option>
 						{tables.map(table => (
 							<option key={table.table_id} value={table.table_id}>
@@ -63,12 +71,25 @@ const AssignTable = () => {
 							</option>
 						))}
 					</select>
-					<button type='submit'>Submit</button>
-					<button type='button' onClick={() => history.goBack()}>
-						Cancel
-					</button>
-				</form>
-			</div>
+					<div className='align-self-center align-self-md-end'>
+						<button
+							type='submit'
+							className='btn btn-primary'
+							style={{ marginRight: '10px' }}
+						>
+							Submit
+						</button>
+						<button
+							type='button'
+							onClick={() => history.goBack()}
+							className='btn btn-danger'
+							// style={{ marginRight: '10px' }}
+						>
+							Cancel
+						</button>
+					</div>
+				</div>
+			</form>
 		</div>
 	);
 };
