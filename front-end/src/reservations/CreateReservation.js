@@ -64,15 +64,15 @@ const CreateReservation = () => {
 	return (
 		<div className='d-flex flex-column align-items-center'>
 			<header>
-				<h1 className='text-center'>Create Reservation</h1>
+				<h1 className='text-center font-weight-bold'>Create Reservation</h1>
 			</header>
 			<ErrorAlert error={reservationsError} />
 			<div>
 				<form onSubmit={handleSubmit} className='container d-flex flex-column'>
-					<div>
+					<div className='d-flex flex-column flex-md-row'>
 						<label
 							htmlFor='first_name'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
 							First Name:
@@ -88,7 +88,7 @@ const CreateReservation = () => {
 						</label>
 						<label
 							htmlFor='last_name'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
 							Last Name:
@@ -104,10 +104,10 @@ const CreateReservation = () => {
 						</label>
 						<label
 							htmlFor='mobile_number'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
-							Phone Number:
+							Number:
 							<input
 								type='tel'
 								name='mobile_number'
@@ -120,10 +120,10 @@ const CreateReservation = () => {
 						</label>
 						<label
 							htmlFor='reservation_date'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
-							Reservation Date:
+							Date:
 							<input
 								type='date'
 								placeholder='YYYY-MM-DD'
@@ -138,10 +138,10 @@ const CreateReservation = () => {
 						</label>
 						<label
 							htmlFor='reservation_time'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
-							Reservation Time:
+							Time:
 							<input
 								type='time'
 								placeholder='HH:MM'
@@ -156,10 +156,10 @@ const CreateReservation = () => {
 						</label>
 						<label
 							htmlFor='people'
-							className='form-label fw-bold'
+							className='font-weight-bold'
 							style={{ marginRight: '10px' }}
 						>
-							Number of People:
+							Party Size:
 							<input
 								type='number'
 								name='people'
@@ -170,7 +170,7 @@ const CreateReservation = () => {
 							/>
 						</label>
 					</div>
-					<div className='align-self-end'>
+					<div className='align-self-center align-self-md-end'>
 						<button
 							type='submit'
 							className='btn btn-primary'

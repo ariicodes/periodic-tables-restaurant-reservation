@@ -35,37 +35,27 @@ const Reservation = ({
 	};
 
 	return (
-		<div
-			className={`card ${
-				status === 'seated'
-					? 'bg-success-subtle'
-					: status === 'cancelled'
-					? 'bg-danger-subtle'
-					: status === 'booked'
-					? 'bg-primary-subtle'
-					: 'bg-secondary-subtle'
-			}`}
-			style={{ marginBottom: '10px' }}
-		>
+		<div className='card' style={{ marginBottom: '10px' }}>
 			<div className='card-body'>
 				<div className='d-flex flex-column align-items-center'>
 					<div>
-						<h5 className='text-center fw-bold'>
+						<h5 className='text-center font-weight-bold'>
 							{first_name} {last_name}
 						</h5>
 						<p>
-							<span className='fw-bold'>Phone Number</span> {mobile_number}
+							<span className='font-weight-bold'>Phone Number</span>{' '}
+							{mobile_number}
 						</p>
 						<p>
-							<span className='fw-bold'>Reservation Date</span>{' '}
+							<span className='font-weight-bold'>Reservation Date</span>{' '}
 							{formatAsDate(reservation_date)}
 						</p>
 						<p>
-							<span className='fw-bold'>Reservation Time</span>{' '}
+							<span className='font-weight-bold'>Reservation Time</span>{' '}
 							{formatAsTime(reservation_time)}
 						</p>
 						<p className='text-center'>
-							<span className='fw-bold'>Party of</span> {people}
+							<span className='font-weight-bold'>Party of</span> {people}
 						</p>
 						<p
 							className={`text-center ${
@@ -79,17 +69,14 @@ const Reservation = ({
 							}`}
 							data-reservation-id-status={reservation_id}
 						>
-							<span className='fw-bold'>Status</span> {status}
+							<span className='font-weight-bold'>Status</span> {status}
 						</p>
 					</div>
 				</div>
 				{status === 'booked' && (
 					<div className='d-flex flex-column'>
-						<div className='d-flex flex-row mb-3 justify-content-evenly'>
-							<a
-								href={`/reservations/${reservation_id}/seat`}
-								style={{ width: '31%' }}
-							>
+						<div className='d-flex flex-row mb-3 justify-content-around'>
+							<a href={`/reservations/${reservation_id}/seat`} className='w-25'>
 								<button
 									type='button'
 									onClick={statusHandler}
@@ -98,10 +85,7 @@ const Reservation = ({
 									Seat
 								</button>
 							</a>
-							<a
-								href={`/reservations/${reservation_id}/edit`}
-								style={{ width: '31%' }}
-							>
+							<a href={`/reservations/${reservation_id}/edit`} className='w-25'>
 								<button
 									type='button'
 									onClick={editClickHandler}

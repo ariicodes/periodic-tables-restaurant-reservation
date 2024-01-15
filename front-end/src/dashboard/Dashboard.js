@@ -124,28 +124,29 @@ function Dashboard({ date }) {
 	return (
 		<main>
 			<div className='d-flex flex-column align-items-center'>
-				<h1 className='fw-bold'>Dashboard</h1>
+				<h1 className='font-weight-bold'>Dashboard</h1>
 				<div className='d-md-flex mb-3'>
 					<h4 className='mb-0 text-center'>
-						Reservations for <span className='fw-bold'>{urlDate || date}</span>
+						Reservations for{' '}
+						<span className='font-weight-bold'>{urlDate || date}</span>
 					</h4>
 				</div>
 				<div className='container' style={{ marginBottom: '12px' }}>
 					<div className='row gx-5 gy-2'>
-						<div className='col-md'>
+						<div className='col-md' style={{ marginBottom: '12px' }}>
 							<button
 								type='button'
 								onClick={previousHandler}
-								className='btn bg-info-subtle w-100 fw-bold'
+								className='btn btn-info w-100'
 							>
 								Previous
 							</button>
 						</div>
-						<div className='col-md'>
+						<div className='col-md' style={{ marginBottom: '12px' }}>
 							<button
 								type='button'
 								onClick={todayHandler}
-								className='btn bg-info-subtle w-100 fw-bold'
+								className='btn btn-info w-100 font-weight-bold'
 							>
 								Today
 							</button>
@@ -154,7 +155,7 @@ function Dashboard({ date }) {
 							<button
 								type='button'
 								onClick={nextHandler}
-								className='btn bg-info-subtle w-100 fw-bold'
+								className='btn btn-info w-100'
 							>
 								Next
 							</button>
@@ -196,11 +197,11 @@ function Dashboard({ date }) {
 								)
 							)
 						) : (
-							<h4 className='fw-bold'>No reservations</h4>
+							<h4 className='font-weight-bold'>No reservations</h4>
 						)}
 					</div>
 					<div className='col-md'>
-						<h4 className='text-center fw-bold'>Tables</h4>
+						<h4 className='text-center font-weight-bold'>Tables</h4>
 						<ErrorAlert error={tablesError} />
 						<TablesList tables={tables} handleFinish={handleFinish} />
 					</div>

@@ -5,14 +5,15 @@ const TablesList = ({ tables, handleFinish }) => {
 				return (
 					<div
 						key={table.table_id}
-						className='card bg-body-tertiary'
+						className='card'
 						style={{ marginBottom: '10px' }}
 					>
-						<div className='card-body d-flex flex-column align-items-center text-center'>
-							<div>
-								<h5 className='fw-bold'>Table • {table.table_name}</h5>
+						<div className='card-body text-center'>
+							<div style={{ marginBottom: '-10px'}}>
+								<h5 className='font-weight-bold'>Table • {table.table_name}</h5>
 								<p>
-									<span className='fw-bold'>Capacity</span> {table.capacity}
+									<span className='font-weight-bold'>Capacity</span>{' '}
+									{table.capacity}
 								</p>
 								<p
 									data-table-id-status={table.table_id}
@@ -20,7 +21,7 @@ const TablesList = ({ tables, handleFinish }) => {
 										table.reservation_id ? 'text-warning' : 'text-success'
 									}
 								>
-									<span className='fw-bold'>Status</span>{' '}
+									<span className='font-weight-bold'>Status</span>{' '}
 									{table.reservation_id ? 'occupied' : 'free'}
 								</p>
 							</div>

@@ -35,11 +35,15 @@ const ReservationSearch = () => {
 
 	return (
 		<div className='container'>
-			<h1 className='text-center'>Search for a reservation</h1>
+			<header>
+				<h1 className='text-center font-weight-bold'>
+					Search for a reservation
+				</h1>
+			</header>
 			<ErrorAlert error={reservationsError} />
 			<form onSubmit={handleSubmit}>
 				<div className='container d-flex flex-column'>
-					<label htmlFor='mobile_number' className='form-label fw-bold'>
+					<label htmlFor='mobile_number' className='font-weight-bold'>
 						Enter a customer's phone number:
 					</label>
 					<input
@@ -51,8 +55,12 @@ const ReservationSearch = () => {
 						required
 						className='form-control'
 					/>
-					<div className='align-self-end'>
-						<button type='submit' className='btn btn-primary my-2'>
+					<div className='align-self-center align-self-md-end'>
+						<button
+							type='submit'
+							className='btn btn-primary my-2'
+							style={{ width: '18vw' }}
+						>
 							Find
 						</button>
 					</div>
@@ -61,7 +69,6 @@ const ReservationSearch = () => {
 			<div>
 				{reservations.length > 0 ? (
 					<div>
-						<h4>Reservations:</h4>
 						<div className='d-flex flex-row'>
 							{reservations.map(
 								({
