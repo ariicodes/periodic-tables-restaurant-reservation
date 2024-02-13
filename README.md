@@ -1,6 +1,6 @@
 # Periodic Tables - Restaurant Reservation System
 
-View the live site here: https://periodic-tables-79m6.onrender.com
+View the live site here: https://periodic-tables.ariicodes.com
 
 ## Overview
 
